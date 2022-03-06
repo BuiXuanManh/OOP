@@ -1,105 +1,116 @@
 package tuan2;
-import java.util.Locale;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.Locale;
+import java.util.Scanner;
 public class Account {
-	private String tenTK;
-	private String soTK;
-	private double tienTK;
-	private final double LAISUAT = 0.035;
-	private final double PHIRUT = 2000;
-	
-	public String getTenTK() {
-		return tenTK;
-	}
-	public void setTenTK(String tenTK) {
-		if (tenTK!="") {
-			this.tenTK = tenTK;
-		} else {
-			System.out.println("loi");
-		}
-	}
-	public String getSoTK() {
-		return soTK;
-	}
-	public void setSoTK(String soTK) {
-		if (soTK!="") {
-			this.soTK = soTK;
-		} else {
-			System.out.println("loi");
-		}
-	}
-	public double getTienTK() {
-		return tienTK;
-	}
-	public void setTienTK(double tienTK) {
-		if (tienTK>0) {
-			this.tienTK = tienTK;
-		} else {
-			System.out.println("loi");
-		}
-	}
-	@Override
-	public java.lang.String toString() {
-		Locale localeVN = new Locale("vi", "VN");
-		NumberFormat currencyVN = NumberFormat.getCurrencyInstance(localeVN);
-		String s="";
-		s=s+s.format("|%10s| %10s | %12s ", getTenTK(),getSoTK(),currencyVN.format(getTienTK()));
-		return s;
-	}
-	public Account() {}
-	public Account(String ten, String so, double tien) {
-		this.tenTK=ten;
-		this.soTK=so;
-		this.tienTK=tien;
-	}
-	public Account(String ten, String so) {
-		this.tenTK=ten;
-		this.soTK=so;
-		this.tienTK=50000;
-	}
-	public double rutTien(Account ac1,double tienRut) {
-		if (tienRut>0 && ac1.getTienTK()-(tienRut+PHIRUT)>50000) {
-			ac1.setTienTK(ac1.getTienTK()-(tienRut+PHIRUT));
-		} else {
-			System.out.println("so du khong the nho hon 50000");
-		}
-		return tienRut;
-	}
-	public boolean napTien(Account ac2, double tienNap) {
-		if (tienNap>0 && ac2!=null) {
-			ac2.setTienTK(ac2.getTienTK()+tienNap);
-			return true;
-		} else {
-			return false;
-		}
-	}
-	public void tienLai(Account ac) {
-		ac.setTienTK(ac.getTienTK() + (ac.getTienTK() * LAISUAT)) ;
-	}
-	public boolean chuyenTien(Account ac1, Account ac2, double tien) {
-		if (ac2.napTien(ac2, ac1.rutTien(ac1, tien)))return true;
-		else return false;
-	}
-	public static void main(String[] args) {
-		Account ac1 = new Account("72354","Ted Murphy",  100000 );
-		Account ac2 = new Account("69713","Jane Smith",  40000);
-		Account ac3 = new Account("93757","Edward Demsey",  700000);
-		ac1.napTien(ac1,25000);
-		ac2.napTien(ac2,50000);
-		ac2.rutTien(ac2, 43000);
-		ac3.tienLai(ac3);
-		System.out.println(ac1);
-		System.out.println(ac2);
-		System.out.println(ac3);
-		ac2.chuyenTien(ac2, ac1, 50000);
-		System.out.println(ac1);
-		System.out.println(ac2);
+    //khai báo các thuộc tính
+    private long soTK;
+    private String tenTK;
+    private double soTienTrongTK;
+
+    Scanner sc = new Scanner(System.in);
+
+    //khởi tạo constructor mặc định
+    public Account() {
+    }
+
+    //khởi tạo constructor có tham số
+    public Account(long soTK, String tenTK, double soTienTrongTK) {
+        this.soTK = soTK;
+        this.tenTK = tenTK;
+        this.soTienTrongTK = soTienTrongTK;
+    }
+
+    //-------------------begin getter and setter--------------------
+    public long getSoTK() {
+        return this.soTK;
+    }
+
+    public void setSoTK(long soTK)  {
+        this.soTK = soTK;
+    }
+
+    public String getTenTK() {
+        return this.tenTK;
+    }
+
+    public void setTenTK(String tenTK) {
+        this.tenTK = tenTK;
+    }
+
+    public double getSoTienTrongTK() {
+        return this.soTienTrongTK;
+    }
+
+    public void setSoTienTrongTK(double soTienTrongTK) {
+        this.soTienTrongTK = soTienTrongTK;
+    }
+
+    //-------------------end getter and setter--------------------
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+    	Locale l = new Locale("vi", "VN");
+        NumberFormat currencyEN = NumberFormat.getCurrencyInstance(l);
+        String str1 = currencyEN.format(soTienTrongTK);
+        return soTK + "-" + tenTK + "-" + str1;
+    }
+
+    //khởi tạo phương thức nạp tiền
+    public double napTien() {
+        double nap;
+        System.out.print("Nhập số tiền bạn cần nạp: ");
+        nap = sc.nextDouble();
+        //nếu số tiền nạp vào lớn hơn 0 thì hợp lệ
+        if (nap >= 0) {
+            soTienTrongTK = nap + soTienTrongTK;
+            Locale l = new Locale("vi", "VN");
+            NumberFormat currencyEN = NumberFormat.getCurrencyInstance(l);
+            String str1 = currencyEN.format(nap);
+            System.out.println("bạn vừa nạp " + str1 + " vào tài khoản.");
+        } else {//ngược lại nếu số tiền nộp vào bé hơn 0 thì không hợp lệ
+            System.out.println("Số tiền nạp vào không hợp lệ!");
+        }
+        return nap;
+    }
+
+    //khởi tạo phương thức rút tiền
+    public double rutTien() {
+        double phi = 2000;
+        double rut;
+        System.out.print("Nhập số tiền bạn cần rút: ");
+        rut = sc.nextDouble();
+        //nếu số tiền rút bé hơn hoặc bằng số tiền còn trong tài khoản + phí thì hợp lệ
+        if (rut <= (soTienTrongTK - phi)) {
+            soTienTrongTK = soTienTrongTK - (rut + phi);
+            Locale l = new Locale("vi", "VN");
+            NumberFormat currencyEN = NumberFormat.getCurrencyInstance(l);
+            String str1 = currencyEN.format(rut);
+            System.out.println("Bạn vừa rút " + str1 + "Đ từ tài khoản. Phí là $5.");
+        } else {//ngược lại nếu số tiền rút lớn hơn số tiền có trong tài khoản thì không hợp lệ
+            System.out.println("Số tiền muốn rút không hợp lệ!");
+            return rutTien();
+        }
+        return rut;
+    }
+
+    //khởi tạo phương thức đáo hạn
+    public double daoHan() {
+        double laiSuat = 0.035;
+        soTienTrongTK = soTienTrongTK + soTienTrongTK * laiSuat;
+        Locale l = new Locale("vi", "VN");
+        NumberFormat currencyEN = NumberFormat.getCurrencyInstance(l);
+        String str1 = currencyEN.format(soTienTrongTK);
+        System.out.println("Bạn vừa được " + str1 + " từ đáo hạn 1 tháng");
+        return soTienTrongTK;
+    }
+    
+    //khởi tạo phương thức in kết quả ra màn hình
+    void inTK() {
+    	Locale l = new Locale("vi", "VN");
+        NumberFormat currencyEN = NumberFormat.getCurrencyInstance(l);
+        String str1 = currencyEN.format(soTienTrongTK);
+        System.out.printf("%-10d %-20s %-20s \n", soTK, tenTK, str1);
+    }
 }
-	private static void fflush(Object stdin) {
-		// TODO Auto-generated method stub
-		
-	}
-}
+

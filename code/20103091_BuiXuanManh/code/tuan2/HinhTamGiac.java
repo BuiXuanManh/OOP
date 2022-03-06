@@ -82,7 +82,6 @@ public class HinhTamGiac {
 		System.out.println(htg1);
 			} while (htg!=null);	
 		}catch (Exception e) {
-			// TODO: handle exception
 		}
 	}
 }
