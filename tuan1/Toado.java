@@ -1,4 +1,4 @@
-package tuan2;
+package tuan1;
 
 import java.util.Scanner;
 
@@ -9,7 +9,7 @@ public class Toado {
 		return hoanhDo;
 	}
 	public void setHoanhDo(double hoanhDo) {
-		if (hoanhDo!=0) {
+		if (hoanhDo%1==0) {
 			this.hoanhDo = hoanhDo;
 		} else {
 			System.out.println("loi");
@@ -19,7 +19,7 @@ public class Toado {
 		return tungDo;
 	}
 	public void setTungDo(double tungDo) {
-		if (tungDo!=0) {
+		if (tungDo%1==0) {
 			this.tungDo = tungDo;
 		} else {
 			System.out.println("loi");
@@ -44,17 +44,27 @@ public class Toado {
 	@Override
 	public String toString() {
 		String s="";
-		s=s+s.format("%10s(%.0f,%.0f)",getTenToado(),getHoanhDo(),getTungDo());
+		s=s+s.format("%20s( %f, %f)",getTenToado(),getHoanhDo(),getTungDo());
 		return s;
 	}
-	public static void nhaptd(Toado t) {
+	public static void main(String[] args) {
+		Toado t = new Toado();
+		try {
+			do {
 				Scanner sc= new Scanner(System.in);
 				System.out.println("ten toa do");
-				t.setTenToado(sc.next());
+				String ten = sc.next();
 				System.out.println("hoanh do");
-				t.setHoanhDo(sc.nextDouble()); 
+				double h = sc.nextDouble();
 				System.out.println("nhap tung do");
-				t.setTungDo(sc.nextDouble()); 
+				double tg= sc.nextDouble();
+				Toado t1 = new Toado(ten,h,tg);
+				System.out.println(t1);	
+			} while (t!=null);
+		
+		
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 }
-

@@ -1,4 +1,4 @@
-package  tuan2;
+package  tuan3;
 
 import java.util.Scanner;
 

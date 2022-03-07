@@ -1,8 +1,6 @@
-package tuan2;
-
+package tuan3;
 import java.text.NumberFormat;
 import java.util.Locale;
-
 public class CD {
     private String  tuaCd, caSy;
     private int maCd, sBh;
