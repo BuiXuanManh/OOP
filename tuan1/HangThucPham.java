@@ -1,23 +1,28 @@
 package tuan1;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Scanner;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.chrono.ChronoLocalDate;
 
 public class HangThucPham {
 	private String  tenHang;
 	private int maHang;
-	private	Date ngaySx,ngayHh;
+	private LocalDate ngaySx;
+	private	LocalDate ngayHh;
 	private double donGia;
 	public int getMaHang() {
 		return maHang;
 	}
-	public void setNgaySx(Date ngaySx) {
-        this.ngaySx = ngaySx;
+	public void setNgaySx(LocalDate localDate) {
+        this.ngaySx = localDate;
     }
-	public void setNgayHh(Date ngayHh) {
-        this.ngayHh = ngayHh;
+	public void setNgayHh(LocalDate localDate) {
+        this.ngayHh = localDate;
     }
 	public void setMaHang(int maHang) {
 			this.maHang = maHang;
@@ -32,21 +37,11 @@ public class HangThucPham {
 			this.tenHang= "xxx";
 		}	
 	}
-	public Date getNgaySx() {
+	public LocalDate getNgaySx() {
 		return ngaySx;
 	}
-	public void setNgaySx(int year, int month, int day) {
-		Calendar c = Calendar.getInstance();
-        c.set(year, month - 1 , day);
-        this.ngaySx = c.getTime();
-	}
-	public Date getNgayHh() {
+	public LocalDate getNgayHh() {
 		return ngayHh;
-	}
-	public void setNgayHh(int year, int month, int day) {
-		Calendar c = Calendar.getInstance();
-        c.set(year, month - 1, day);
-        this.ngayHh =  c.getTime();
 	}
 	public double getDonGia() {
 		return donGia;
@@ -71,44 +66,33 @@ public class HangThucPham {
         return t;
     }
 	public HangThucPham() {}
-	public HangThucPham(int maHang, String tenHang, Date ngaySx, Date ngayHh, double donGia) {
+	public HangThucPham(int maHang, String tenHang, LocalDate ngaySx, LocalDate ngayHh, double donGia) {
 		this.maHang=maHang;
 		this.tenHang=tenHang;
 		this.ngaySx=ngaySx;
 		this.ngayHh=ngayHh;
 		this.donGia=donGia;
 	}
+	@Override
+	public String toString() {
+		return  " tenHang=" + tenHang + 
+				" maHang=" + maHang + ""
+			+   " ngaySx=" + ngaySx + 
+				" ngayHh=" + ngayHh
+			+   " donGia=" + donGia;
+	}
 	public void kiemTraHSD() {
-        Date today = new Date();
-        today.getTime();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        String st = simpleDateFormat.format(today);
-        if (this.getNgayHh().compareTo(today) < 0) {
-            System.out.println("Hôm nay là ngày " + st + ", hàng hóa đã hết hạn ");
+        if (this.getNgayHh().compareTo(LocalDate.now()) < 0) {
+            System.out.println("Hôm nay là ngày "+ LocalDate.now()+", hàng hóa đã hết hạn ");
         } else {
-            System.out.println("Hôm nay là ngày " + st + ", hàng hóa vẫn còn hạn ");
+            System.out.println("Hôm nay là ngày " +  LocalDate.now() + ", hàng hóa vẫn còn hạn ");
         }
     }
-	public String toString() {
-	DecimalFormat df = new DecimalFormat("#,##0.00");
-	String str = df.format(donGia);
-	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-    String str1 = simpleDateFormat.format(ngaySx);
-    String str2 = simpleDateFormat.format(ngayHh);
-    return "Thong tin ve hang thuc pham: " +
-    "Mã hàng : " + maHang +
-    "\nTên hàng : " + tenHang +
-    "\nĐơn giá : " + str +
-    "\nNgày sản xuất : " + str1 +
-    "\nHạn sử dụng : " + str2
-    ;
-}
-	public static void main(String[] args) {
-		Scanner scanner = new Scanner(System.in);
-        HangThucPham tp = new HangThucPham();
-        boolean kt = true;
+	public void nhapTP(HangThucPham tp){
+		Scanner scanner= new Scanner(System.in);
+		boolean kt = true;
         boolean th = true;
-        System.out.println("Nhập mã hàng : ");
+		System.out.println("Nhập mã hàng : ");
         tp.setMaHang(scanner.nextInt());
         scanner.nextLine();
         do {
@@ -119,11 +103,12 @@ public class HangThucPham {
         tp.setDonGia(scanner.nextDouble());
         do {
             System.out.println("Nhập năm,tháng,ngày sản xuất : ");
-            tp.setNgaySx(scanner.nextInt(), scanner.nextInt(), scanner.nextInt());
+            tp.setNgaySx(LocalDate.of(scanner.nextInt(), scanner.nextInt(), scanner.nextInt()));
             System.out.println("nhập năm,tháng,ngày hết hạn : ");
-            tp.setNgayHh(scanner.nextInt(), scanner.nextInt(), scanner.nextInt());
+            tp.setNgayHh(LocalDate.of(scanner.nextInt(), scanner.nextInt(), scanner.nextInt()));
         } while (tp.kiemTraNgay(th));
-        System.out.println(tp);
-        tp.kiemTraHSD();
+	}
+	static void inTP(HangThucPham tp) {
+	    System.out.printf("%-10d %-20s %-20s \n", tp.getMaHang(), tp.getTenHang(), tp.getDonGia(),tp.getNgaySx(),tp.getNgayHh());
     }
 }

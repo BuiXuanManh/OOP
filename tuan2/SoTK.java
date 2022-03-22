@@ -1,6 +1,7 @@
 package tuan2;
 
 import java.awt.Point;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.Period;
 
@@ -71,8 +72,8 @@ public class SoTK {
 	}
 	@Override
 	public String toString() {
-		return "SoTK [maSo=" + maSo + ", ngayMo=" + ngayMo + ", tienGui=" + tienGui + ", kyHan=" + kyHan + ", laiS="
-				+ laiS + "]";
+		return "Ma so =" + maSo + ", Ngay mo so =" + ngayMo + ", tien gui=" + tienGui + ", ky han=" + kyHan + ", lai suat ="
+				+ laiS + "";
 	}
 	public int stgthuc() {
 		Period date = Period.between(ngayMo, LocalDate.now());
@@ -82,7 +83,8 @@ public class SoTK {
 		if(thanggui % kyHan==0 ) return thanggui;
 			else return thanggui/kyHan*kyHan ;
 	}
-	public double tienlai() {
-		return getTienGui()*getLaiS()*stgthuc();
+	public String tienlai() {
+		DecimalFormat formatter = new DecimalFormat("###,###,###");
+		return formatter.format(getTienGui()*getLaiS()*stgthuc());
 	}
 }
